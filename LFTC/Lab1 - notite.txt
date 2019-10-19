@@ -1,0 +1,60 @@
+http://www.cs.ubbcluj.ro/~motogna/LFTC/lab1.txt
+
+Lab1 LFTC - deadline S5
+
+I. Minilanguage specification - deadline S3
+II. Scanner (Lexical Analyser) - deadline S5
+
+letter{letter/digit}
+letter ::= "A" | ... | "Z" | "a" | ... | "z"
+
+• decide over BNF or EBNF
+• wrong syntax: expression, iostms
+	- expression ::- 
+	- iostmt EBNF = ("READ" | "WRITE") IDENTIFIER
+	- iostms = "READ" IDENTIFIER | "WRITE" (IDENTIFIER | CONSTANT)
+	- <iostmt> BNF ::= READ <IDENTIFIER> | WRITE <IDENTIFIER>| WRITE <CONSTANT>
+
+
+Example 1:
+<program> ::= # <stmt> .
+<stmt> ::= <id> ~ <const>
+""""
+# 
+A ~ 2
+.
+""""
+
+   Codification Table
+-------------------------
+| Token type	|   code |
+-------------------------
+| identifier	|   10  |
+-------------------------
+| constant	|   11  |
+-------------------------
+| #		|   12  |
+-------------------------
+| .		|   13	|
+-------------------------
+| ~		|   14	|
+-------------------------
+
+__________________________________________________________________________________________________
+
+• user-defined type = lista, colectia
+• instructiuni si de input si de output
+
+The scanner assignment will be diferentiated based on:
+Lab 1 Part 2: 1b2a3b 
+
+Paranteze in EBNF
+a|bc => a, bc
+(a|b)c => ac,bc
+[a]b => ab, b
+a{b} => a, ab, abb..b
+
+BNF:
+<p> ::= a<p>|a => a, aa, aa..a
+<p> ::= a<p>|<p>b|a|b => a,b,aa,ab,bb,aa,aaa,aab...
+<p> ::= a<p>b | c => c,acb,aacbb,aaacbbb...
