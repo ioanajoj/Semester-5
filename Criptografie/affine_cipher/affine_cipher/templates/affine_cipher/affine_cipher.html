@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Encrypt text using the Affine Cipher
+{% endblock %}
+
+{% block content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var text = false, a = false, b = false;
+
+            $(".encrypt_button").attr("disabled", true);
+            $(".decrypt_button").attr("disabled", true);
+
+            $("#id_text").blur(function() {
+                if($(this).val == "") {
+                    $(this).css({"border-color":"red"});
+                    text = false;
+                }
+                else {
+                    $(this).css({"border-color":"green"});
+                    text = true;
+                    checkConsistency()
+                }
+            });
+
+            $("#id_a").blur(function() {
+                var val = $(this).val();
+                if(Math.round(val/27) == val/27) {
+                    $(this).css({"border-color":"red"});
+                    a = false
+                }
+                else {
+                    $(this).css({"border-color":"green"});
+                    a = true;
+                    checkConsistency();
+                }
+            });
+
+            $("#id_b").blur(function() {
+                if($(this).val() == "") {
+                    $(this).css({"border-color":"red"});
+                    b = false
+                }
+                else {
+                    $(this).css({"border-color":"green"});
+                    b = true;
+                    checkConsistency();
+                }
+            });
+
+            function checkConsistency() {
+                if(text && a && b) {
+                    $(".encrypt_button").removeAttr("disabled");
+                    $(".decrypt_button").removeAttr("disabled");
+                }
+            }
+        });
+    </script>
+
+    <div class="register_section">
+        <p class="not_registered_message">Encrypt using the affine cipher</p>
+        <form method="POST">
+            {% csrf_token %}
+            <table class="register_form">
+                    {% for field in form.visible_fields %}
+                        <tr class="register_form_field">
+                            <th>{{ field.label_tag }}</th>
+                            <td>
+                                {{ field.errors }}
+                                {{ field }}
+                                {{ field.help_text }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            <input class="encrypt_button" type="submit" name="encrypt" value="Encrypt" />
+            <input class="encrypt_button" type="submit" name="decrypt" value="Decrypt" />
+        </form>
+    </div>
+
+    {% if  encrypted_text %}
+        Encrypted text: {{ encrypted_text }}
+    {% endif %}
+
+    {% if  decrypted_text %}
+        Decrypted text: {{ decrypted_text }}
+    {% endif %}
+
+{% endblock %}

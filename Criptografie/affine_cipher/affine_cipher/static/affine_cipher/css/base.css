@@ -1,0 +1,142 @@
+body {
+    background-color: #f6f4f4;
+    color: #7b7b7b;
+    font-size: medium;
+    font-weight: bold;
+    font-family: "Malgun Gothic", serif;
+}
+
+body a {
+    color: #32a85d;
+    text-decoration: none;
+}
+
+/* ------- horizontal menu ------- */
+.main_menu {
+    width: 100%;
+}
+
+/*!* ------- horizontal menu options ------- *!*/
+.main_menu > li {
+    width: 20%;
+    color: #32a85d;
+    font-size: 15px;
+    vertical-align: middle;
+    padding: 3px 3px 3px 3px;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: transparent;
+}
+
+.main_menu > li:hover{
+    /*background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgb(177, 182, 184));*/
+    border-bottom-color: #32a85d;
+}
+
+/* ------- header contents ------- */
+.header_stuff {
+    background-color: #eae8e8;
+}
+
+/* ------- footer contents ------- */
+.footer_details {
+    width: 100%;
+    height: 30px;
+    background-color: #343a40;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    position: fixed;
+    font-weight: 400;
+    display: table;
+    box-sizing: border-box;
+}
+
+.footer_details p {
+    color: #32a85d;
+    float: left;
+    padding-left: 10px;
+}
+
+.footer_details a {
+    float: right;
+    padding-right: 10px;
+}
+
+
+/* ------- register page ------- */
+
+.register_form {
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.register_form_field {
+    /*color: #171b1d;*/
+}
+
+.register_form_field > th {
+    /*color: #171b1d;*/
+    padding-right: 30px;
+    color: #7b7b7b;
+    font-family: "Malgun Gothic", serif;
+}
+
+.register_widget {
+    background-color: rgba(255,255,255,0);
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: #7b7b7b
+}
+
+.register_widget:hover {
+    border-color: #32a85d
+}
+
+/* ------- login page ------- */
+
+.not_registered_message {
+    padding: 10px 40px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* -------- LOGIN/REGISTER BUTTON ---------- */
+
+.encrypt_button {
+    background-color: #32a85d;
+    padding: 5px 40px;
+    border-radius: 12px;
+    display: block;
+    margin: 10px auto;
+    color: #3f4345;
+}
+
+.important_text {
+    color: #20962e;
+}
+
+.fancy_button:hover {
+    background-color: #20962e;
+    padding: 5px 40px;
+    border-radius: 12px;
+    display: block;
+    margin: 10px auto;
+    color: #3f4345;
+}
+
+/* -------- CONTAINER ---------- */
+
+.container {
+    margin-top: 20px;
+    font-family: 'verdana', fantasy;
+}
+
+/* -------- OTHER STUFF -------- */
+
+.white_element {
+    background-color: #fefefe;
+}
