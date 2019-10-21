@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <vector>
+#include "Transfer.h"
 
 class Account
 {
@@ -9,6 +10,7 @@ public:
 	std::mutex mutex;
 	unsigned initialBalance;
 	unsigned balance;
+	std::vector<Transfer*> transfers;
 
 	Account();
 	Account(unsigned id, unsigned balance);

@@ -12,25 +12,22 @@ Transfer::Transfer(Account * sourceAccount, Account * destinationAccount, unsign
 
 void Transfer::transfer()
 {
+	//std::cout << "Transfer from " << sourceAccount->id << " to " << destinationAccount->id;
 	if (sourceAccount->id < destinationAccount->id) {
-		std::cout << "Lock " << sourceAccount->id << "\n";
 		sourceAccount->mutex.lock();
-		std::cout << "Lock " << destinationAccount->id << "\n";
 		destinationAccount->mutex.lock();
 	}
 	else {
 		destinationAccount->mutex.lock();
 		sourceAccount->mutex.lock();
 	}
-	std::cout << "Transfer from " << sourceAccount->id << " to " << destinationAccount->id;
+
 	sourceAccount->balance -= amount;
-	/*sourceAccount->transfers.push_back(this);
+	sourceAccount->transfers.push_back(this);
 	destinationAccount->balance += amount;
 	destinationAccount->transfers.push_back(this);
-	*/
-	std::cout << "Unlock " << sourceAccount->id << "\n";
+	
 	sourceAccount->mutex.unlock();
-	std::cout << "Unlock " << destinationAccount->id << "\n";
 	destinationAccount->mutex.unlock();
 }
 

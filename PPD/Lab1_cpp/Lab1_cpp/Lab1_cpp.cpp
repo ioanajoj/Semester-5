@@ -2,77 +2,82 @@
 #include <iostream>
 #include <vector>
 #include "Account.h"
+#include "Transfer.h"
 #include <cstdlib>
-/*
-void executeTransfers(unsigned start, unsigned end, std::vector<Transfer*> transfers) {
-	for (unsigned i = start; i < end; i++) {
-		transfers[i]->transfer();
-	}
-	std::cout << "My name is thread\n";
-}
-*/
 
-std::mutex mtx;
-void print_thread_id(int id) {
-	// critical section (exclusive access to std::cout signaled by locking mtx):
-	mtx.lock();
-	std::cout << "thread #" << id << '\n';
-	mtx.unlock();
+void executeTransfers(std::mutex* mutex, unsigned start, unsigned end, std::vector<Transfer*> transfers) {
+	for (unsigned i = start; i < end; i++) {
+		(*mutex).lock();
+		transfers[i]->transfer();
+		(*mutex).unlock();
+	}
 }
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	// parameters
+	unsigned noOfBankAccounts = 100;
+	unsigned noOfTransfers = 1000000;
+	unsigned noOfThreads = 16;
+	std::mutex mutex;
+
+	// initialize random seed
+	srand(time(NULL));
+
+    std::cout << "Initializing data in bank.." << std::endl; 
 	
-	std::vector<std::unique_ptr<Account>> accounts;
-	for (int i = 0; i < 12; i++) {
-		accounts.push_back(std::make_unique<Account>(i, rand() % 10));
+	// initialize bank accounts
+	std::vector<Account*> accounts;
+	for (unsigned i = 0; i < noOfBankAccounts; i++) {
+		accounts.push_back(new Account(i, rand() % 1000));
 	}
-	/*
+
+	// create random transfers
 	std::vector<Transfer*> transfers;
-	for (int i = 0; i < 10; i++) {
+	for (unsigned i = 0; i < noOfTransfers; i++) {
 		unsigned sourceId = rand() % 10;
 		unsigned destinationId = rand() % 10;
 		while (sourceId == destinationId) {
 			destinationId = rand() % 10;
 		}
 		transfers.push_back(new Transfer(accounts[sourceId], accounts[destinationId], rand() % 50));
-		std::cout << (*transfers[i]);
+		
 	}
-
-	std::thread threads[10];
-	for (int i = 0; i < 10; ++i)
-		threads[i] = std::thread(print_thread_id, i + 1);
-
-	for (auto& th : threads) th.join();
-	*/
-	/*
-	std::thread threads[10];
-	unsigned noOfThreads = 1;
+	
+	// distribute and assign transfers to threads
+	std::vector<std::thread> threads;
 	unsigned transfersPerThread = transfers.size() / noOfThreads;
 	for (unsigned i = 0; i < noOfThreads; i++) {
 		unsigned start = i * transfersPerThread;
 		unsigned end = (i + 1)*transfersPerThread;
-		threads[i] = std::thread(print_thread_id, i+1);
+		threads.push_back(std::thread(executeTransfers, &mutex, start, end, transfers));
 	}
-
+	
+	// start worker threads
+	std::cout << "Starting transfers.." << std::endl;
+	auto start = std::chrono::steady_clock::now();
 	for (auto& thread : threads) 
 		thread.join();
-	*/
-	for (int i = 0; i < accounts.size(); i++) {
-		std::cout << (*accounts[i].get());
-	}
-
-
-	/*std::cout << "Size of transfers: " << transfers.size() << "\nSize of accounts: " << accounts.size();*/
+	auto end = std::chrono::steady_clock::now();
+	auto diff = end - start;
+	std::cout << "Execution time: " << std::chrono::duration <double, std::milli>(diff).count() << " ms" << std::endl;
 	
+	// run consistency check on all accounts
+	bool consistencyCheck = true;
+	std::cout << "Validation of data in bank: ";
+	for (unsigned i = 0; i < accounts.size(); i++) {
+		consistencyCheck = consistencyCheck && accounts[i]->consistencyCheck();
+	}
+	std::cout << consistencyCheck << std::endl;
 
-	/*
-	std::thread threads[10];
-	// spawn 10 threads:
-	for (int i = 0; i < 10; ++i)
-		threads[i] = std::thread(print_thread_id, i + 1);
+	// clean up
+	for (Transfer* transfer : transfers)
+		delete transfer;
+	transfers.clear();
+	for (Account* account : accounts)
+		delete account;
+	accounts.clear();
 
-	for (auto& th : threads) th.join();
-	*/
+	std::cout << "Bye world!" << std::endl;
+
 }

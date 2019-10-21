@@ -17,14 +17,14 @@ Account::Account(unsigned id, unsigned balance)
 bool Account::consistencyCheck()
 {
 	unsigned transferedAmount = 0;
-	/*for (Transfer* transfer : this->transfers) {
+	for (Transfer* transfer : this->transfers) {
 		if (transfer->sourceAccount->id == this->id)
 			transferedAmount -= transfer->amount;
 		else if (transfer->destinationAccount->id == this->id)
 			transferedAmount += transfer->amount;
 	}
 	if (this->initialBalance + transferedAmount == this->balance)
-		return true;*/
+		return true;
 	return false;
 }
 
