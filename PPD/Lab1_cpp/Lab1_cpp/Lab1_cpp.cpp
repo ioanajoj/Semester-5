@@ -25,7 +25,6 @@ int main()
 	srand(time(NULL));
 
     std::cout << "Initializing data in bank.." << std::endl; 
-	
 	// initialize bank accounts
 	std::vector<Account*> accounts;
 	for (unsigned i = 0; i < noOfBankAccounts; i++) {
