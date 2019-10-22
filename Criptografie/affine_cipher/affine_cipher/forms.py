@@ -10,3 +10,4 @@ class AffineCipherForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AffineCipherForm, self).__init__(*args, **kwargs)
+

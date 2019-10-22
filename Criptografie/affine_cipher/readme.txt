@@ -1,0 +1,2 @@
+• You can find the classes that actually do the thing in affine_cipher/affine_cipher/models.py, the methods are mostly documented
+• Some UI validation can be found in affine_cipher/affine_cipher/templates/affine_cipher/affine_cipher.html

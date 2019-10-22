@@ -36,6 +36,8 @@ class AffineCipher(models.Model):
         • Construct the encrypted text by appending for each letter the mapped encrypted letter
         :return: encrypted text
         """
+        if not self.validate_input():
+            return "The 'a' key shouldn't have common divisors with the size of the alphabet!"
         self.text = self.alphabet.lower_text(self.text)
         encrypted_text = ""
         for letter in self.text:
@@ -125,6 +127,16 @@ class AffineCipher(models.Model):
             b, a, x, y, u, v = a, r, u, v, m, n
         gcd = b
         return gcd, x, y
+
+    def validate_input(self):
+        """
+        Check if key a given as input and the size of the alphabet are prime
+        :return: boolean: True if valid, False if invalid
+        """
+        gcd = self.extended_gcd(self.a, self.alphabet.size)[0]
+        if gcd != 1:
+            return False
+        return True
 
     def __str__(self):
         return "Affine Cipher: " + self.text + " " + str(self.a) + " " + str(self.b)
