@@ -13,6 +13,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
 	friend Matrix operator + (Matrix const & matrix1, Matrix const & matrix2);
+	friend Matrix operator * (Matrix const & matrix1, Matrix const & matrix2);
 
 	~Matrix();
 };
