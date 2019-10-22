@@ -8,6 +8,7 @@ public:
 	unsigned rows, columns;
 
 	Matrix();
+	/*Matrix(const Matrix &another_matrix);*/
 	Matrix(unsigned rows, unsigned columns, int matrix[100][100]);
 	Matrix(unsigned rows, unsigned columns, int** matrix);
 

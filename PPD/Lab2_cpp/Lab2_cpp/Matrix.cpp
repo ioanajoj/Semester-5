@@ -42,6 +42,7 @@ Matrix::Matrix()
 {
 	this->rows = 0;
 	this->columns = 0;
+	this->matrix = new int*[0];
 }
 
 Matrix::Matrix(unsigned rows, unsigned columns, int matrix[100][100])
@@ -117,7 +118,7 @@ Matrix operator+(Matrix const & matrix1, Matrix const & matrix2)
 
 	// stop timing
 	auto endTime = std::chrono::high_resolution_clock::now();
-	std::cout << "Time needed to do multiplication: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
+	std::cout << "Time needed to add: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
 
 	// create new matrix
 	return Matrix(rows, columns, sum_matrix);
