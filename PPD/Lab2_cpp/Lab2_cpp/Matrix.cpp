@@ -92,7 +92,7 @@ Matrix operator+(Matrix const & matrix1, Matrix const & matrix2)
 
 	// decide how to divide work
 	unsigned cells = rows * columns;
-	unsigned noOfThreads = 20;
+	unsigned noOfThreads = 8;
 	int computationsPerThread;
 	if (cells > noOfThreads) 
 		computationsPerThread = ceil(cells / (double)noOfThreads);
