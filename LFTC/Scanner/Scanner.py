@@ -19,25 +19,69 @@ class Scanner:
         self.errors = []
 
     def scan(self):
-        for token in self.tokens:
-            if token in self.codification_table:
+        skip = 0
+        for index, token in enumerate(self.tokens):
+            if skip:
+                skip -= 1
+                continue
+            # check if content is string
+            if token == "\"":
+                try:
+                    next_index = self.tokens.index("\"", index + 1)
+                    assumed_string = "".join(self.tokens[index:next_index+1])
+                    skip = next_index - index
+                    if MiniLanguageValidator.is_string(assumed_string):
+                        token_code = 1
+                        st_pos = self.st.add_symbol(assumed_string)
+                        self.pif.append((token_code, st_pos))
+                        continue
+                except ValueError:
+                    message = "Unclassified token: found no end of string that began at: " \
+                              + str("".join(self.tokens[index:index+2]))
+                    self.errors.append(message)
+                    continue
+            # check if content is collection
+            if token == "[":
+                try:
+                    next_index = self.tokens.index("]", index + 1)
+                    assumed_string = "".join(self.tokens[index:next_index + 1])
+                    skip = next_index - index
+                    if MiniLanguageValidator.is_collection(assumed_string):
+                        token_code = 1
+                        st_pos = self.st.add_symbol(assumed_string)
+                        self.pif.append((token_code, st_pos))
+                    continue
+                except ValueError:
+                    message = "Unclassified token: found no end of collection that began at: " \
+                              + str("".join(self.tokens[index:index + 2]))
+                    self.errors.append(message)
+                    continue
+            # check if token is constant
+            if MiniLanguageValidator.is_valid_constant(token):
+                token_code = 1
+                st_pos = self.st.add_symbol(token)
+                self.pif.append((token_code, st_pos))
+                continue
+            # check if token is in codification table
+            elif token in self.codification_table:
                 token_code = self.codification_table[token]
                 st_pos = -1
                 self.pif.append((token_code, st_pos))
-            else:
-                token_code = None
-                # check if token is identifier
-                if MiniLanguageValidator.is_valid_identifier(token):
-                    token_code = 0
-                # check if token is constant
-                if MiniLanguageValidator.is_valid_constant(token):
-                    token_code = 1
-                if token_code is None:
-                    message = "Unclassified token: wrong identifier or constant found in token: " + str(token)
+                continue
+            # check if token is identifier
+            elif MiniLanguageValidator.is_valid_identifier(token):
+                if len(token) > 250:
+                    message = "Invalid identifier: length should not exceed 250 characters"
                     self.errors.append(message)
-                else:
-                    st_pos = self.st.add_symbol(token)
-                    self.pif.append((token_code, st_pos))
+                    continue
+                token_code = 0
+                st_pos = self.st.add_symbol(token)
+                self.pif.append((token_code, st_pos))
+                continue
+            # error
+            else:
+                message = "Unclassified token: wrong identifier or constant found in token: " + str(token)
+                self.errors.append(message)
 
     def read_codification_table(self, filename):
         with open(filename) as file:

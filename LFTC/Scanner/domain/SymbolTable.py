@@ -76,10 +76,22 @@ class SymbolTable:
 
 class Node:
     def __init__(self, st_pos, symbol, left=None, right=None):
+        """
+        Data type for a node in a binary search tree
+        :param st_pos: position in symbol
+        :param symbol:
+        :param left:
+        :param right:
+        """
         self.ST_pos = st_pos
         self.symbol = symbol
         self.left = left
         self.right = right
 
     def __str__(self):
-        return str(self.ST_pos) + " - " + str(self.symbol)
+        result = "ST_pos:\t" + str(self.ST_pos) + "\tSymbol:\t" + str(self.symbol)
+        if self.left is not None:
+            result += "\n\tleft:\t" + str(self.left.symbol)
+        if self.right is not None:
+            result += "\n\tright:\t" + str(self.right.symbol)
+        return result

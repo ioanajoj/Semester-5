@@ -6,13 +6,29 @@ codification_table_file = "codification_table.in"
 program_file = "input.ig"
 scanner = Scanner(codification_table_file, program_file)
 
-print("Codification table: " + str(scanner.codification_table))
+print("Read codification table: " + str(scanner.codification_table))
 
-print("Calling scanner")
+print("Scanning input file...")
 scanner.scan()
 
-print(scanner.pif)
-print(scanner.st)
-print(scanner.errors)
+print("=============================")
+print("|\tProgram internal form\t|")
+print("=============================")
+for pair in scanner.pif:
+    print("|\t\t" + str(pair[0]) + "\t\t|\t\t" + str(pair[1]) + "\t|")
+    print("-----------------------------")
 
-print("Bye World!")
+print("\n\n", end="")
+
+print("=============================")
+print("|\t\tSymbol Table\t\t|")
+print("=============================")
+print(scanner.st)
+
+if len(scanner.errors):
+    print("Found errors:")
+    for error in scanner.errors:
+        print(error)
+
+
+print("\nBye World!")
