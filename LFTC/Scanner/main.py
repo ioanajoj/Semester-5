@@ -1,5 +1,4 @@
 from Scanner import Scanner
-from domain.SymbolTable import SymbolTable
 
 print("Hello World!")
 
@@ -13,5 +12,7 @@ print("Calling scanner")
 scanner.scan()
 
 print(scanner.pif)
+print(scanner.st)
+print(scanner.errors)
 
 print("Bye World!")

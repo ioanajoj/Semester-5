@@ -1,7 +1,7 @@
 import re
 
 from domain.MiniLanguageValidator import MiniLanguageValidator
-from domain.ScannerExceptions import InvalidCodificationTableException, InvalidInput
+from domain.ScannerExceptions import InvalidCodificationTableException
 from domain.SymbolTable import SymbolTable
 
 
@@ -12,6 +12,7 @@ class Scanner:
         if not self.codification_table:
             raise InvalidCodificationTableException("Error while reading codification table file")
         self.input, self.tokens = self.read_input(input_file)
+
         # outputs
         self.pif = []
         self.st = SymbolTable()
@@ -25,15 +26,17 @@ class Scanner:
                 self.pif.append((token_code, st_pos))
             else:
                 token_code = None
-                st_pos = self.st.add_symbol(token)
+                # check if token is identifier
                 if MiniLanguageValidator.is_valid_identifier(token):
                     token_code = 0
+                # check if token is constant
                 if MiniLanguageValidator.is_valid_constant(token):
                     token_code = 1
                 if token_code is None:
                     message = "Unclassified token: wrong identifier or constant found in token: " + str(token)
                     self.errors.append(message)
                 else:
+                    st_pos = self.st.add_symbol(token)
                     self.pif.append((token_code, st_pos))
 
     def read_codification_table(self, filename):

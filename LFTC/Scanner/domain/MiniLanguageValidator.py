@@ -2,28 +2,21 @@ import re
 
 
 class MiniLanguageValidator:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def validate_input(tokens):
-        if tokens[0] != 'begin' or tokens[-1] != 'end':
-            return False
-        return True
+    identifier_pattern = r"^[a-z][a-z0-9_]*"
+    integer_pattern = r"[0-9]+$"
+    string_pattern = r"\"[a-z0-9]+\""
 
     @staticmethod
     def is_valid_identifier(token):
-        pattern = r"^[a-z][a-z0-9_]*"
-        return re.match(pattern, token)
+        return re.match(MiniLanguageValidator.identifier_pattern, token) is not None
 
     @staticmethod
     def is_valid_constant(token):
-        return MiniLanguageValidator.is_integer(token) or MiniLanguageValidator.is_bool(token)
+        return MiniLanguageValidator.is_integer(token)
 
     @staticmethod
     def is_integer(token):
-        pattern = r"[0-9]+"
-        return re.match(pattern, token)
+        return re.match(MiniLanguageValidator.integer_pattern, token) is not None
 
     @staticmethod
     def is_bool(token):
@@ -33,11 +26,8 @@ class MiniLanguageValidator:
 
     @staticmethod
     def is_string(tokens):
-        pattern = r"\"[a-z0-9]+\""
         string = ''.join(tokens)
-        if not re.match(pattern, string):
-            return True
-        return False
+        return re.match(MiniLanguageValidator.string_pattern, string) is not None
 
     @staticmethod
     def is_collection(tokens):
