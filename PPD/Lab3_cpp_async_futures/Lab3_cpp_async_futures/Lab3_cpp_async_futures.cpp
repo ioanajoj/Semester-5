@@ -3,10 +3,6 @@
 #include <iostream>
 #include "Matrix.h"
 
-void called_from_async() {
-	std::cout << "Async call" << std::endl;
-}
-
 int main()
 {
 	std::cout << "Hello World!\n"; 
@@ -18,7 +14,6 @@ int main()
 
 	std::cout << matrix1 << std::endl;
 	std::cout << matrix2 << std::endl;
-
 	
 	std::cout << "Compute sum matrix.." << std::endl;
 	Matrix sum_matrix = matrix1 + matrix2;
