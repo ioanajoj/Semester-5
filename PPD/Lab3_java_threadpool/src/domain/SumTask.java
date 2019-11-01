@@ -17,7 +17,7 @@ public class SumTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Adding cell " + cell);
+//        System.out.println("Adding cell " + cell);
         int row = cell / matrix1.columns;
         int column = cell % matrix1.columns;
         int sum = 0;

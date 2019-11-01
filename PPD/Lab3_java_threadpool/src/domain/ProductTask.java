@@ -17,7 +17,7 @@ public class ProductTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Multiplying " + cell);
+//        System.out.println("Multiplying " + cell);
         int product = 0;
         int row = cell / matrix2.columns;
         int column = cell % matrix2.columns;
