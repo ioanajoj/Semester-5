@@ -1,0 +1,16 @@
+Goal
+The goal of this lab is to use more advanced mechanisms for launching parallel operations — the thread pool and the future.
+
+Requirements
+Take the same problems as for lab 2, but, instead of directly creating threads, use each of the following:
+
+• Thread pool, in C++.
+• Thread pool, in C# or Java.
+• std::async() and std::future(), in C++.
+• Tasks and futures in C# or Java.
+
+Compare the performance of the various mechanisms.
+
+Write a documentation containing:
+for each synchronization primitive used, the rules involving it (for a mutex, what invariants it protects; for a producer-consumer synchronization device, when is it triggered);
+what tests have you done, on what hardware platform, for what size of the data, and what was the time consumed.
