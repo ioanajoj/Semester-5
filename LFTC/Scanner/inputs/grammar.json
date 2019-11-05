@@ -1,0 +1,10 @@
+{
+  "nonterminals": ["S", "A", "B"],
+  "terminals": ["a", "b", "c"],
+  "productions": {
+    "S": "AB",
+    "A": "aAb|ab",
+    "B": "cB|c"
+  },
+  "initial_symbol": "S"
+}
