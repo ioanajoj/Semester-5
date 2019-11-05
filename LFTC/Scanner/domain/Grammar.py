@@ -13,6 +13,32 @@ class Grammar:
         # initial symbol
         self.initial_symbol = None
 
+    def show_elements(self):
+        menu = Grammar.__get_show_menu()
+        while True:
+            print(menu)
+            try:
+                print("> ", end="")
+                choice = int(input())
+                if choice == 0:
+                    break
+                elif choice == 1:
+                    print(str(self.nonterminals))
+                elif choice == 2:
+                    print(str(self.terminals))
+                elif choice == 3:
+                    result = "Productions:\n"
+                    for production in self.productions:
+                        result += str(production)
+                        result += ",\n"
+                    if len(self.productions) > 0:
+                        result = result[:-2]
+                    print(result + "\n")
+                elif choice == 4:
+                    print(str(self.initial_symbol))
+            except ValueError:
+                print("Invalid command.")
+
     def read_file(self, filename):
         with open(filename) as json_data:
             data = json.load(json_data)
@@ -25,7 +51,7 @@ class Grammar:
             self.initial_symbol = data["initial_symbol"]
 
     def read_user_input(self):
-        menu = Grammar.__get_menu()
+        menu = Grammar.__get_read_menu()
         while True:
             print(menu)
             try:
@@ -117,12 +143,22 @@ class Grammar:
         return result
 
     @staticmethod
-    def __get_menu():
+    def __get_read_menu():
         menu = "Enter the desired option:\n"
         menu += "1. Add nonterminal.\n"
         menu += "2. Add terminal.\n"
         menu += "3. Add a production.\n"
         menu += "4. Set initial symbol.\n"
+        menu += "0. Exit."
+        return menu
+
+    @staticmethod
+    def __get_show_menu():
+        menu = "Enter the desired option:\n"
+        menu += "1. Show nonterminals.\n"
+        menu += "2. Show terminals.\n"
+        menu += "3. Show productions.\n"
+        menu += "4. Show initial symbol.\n"
         menu += "0. Exit."
         return menu
 
