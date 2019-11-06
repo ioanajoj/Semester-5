@@ -1,0 +1,1 @@
+• Check if data is consistent when reading from file or from user input?
