@@ -95,7 +95,7 @@ Matrix operator*(Matrix const & matrix1, Matrix const & matrix2)
 
 
 	// decide how to divide work
-	unsigned noOfThreads = 8;
+	unsigned noOfThreads = 1;
 	int computationsPerThread;
 	if (cells > noOfThreads)
 		computationsPerThread = ceil(cells / (double)noOfThreads);

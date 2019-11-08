@@ -19,18 +19,17 @@ public:
 
 	void producer(unsigned start, unsigned end);
 	void consumer(unsigned id);
-	bool finished();
+
 	Matrix* get_result_matrix();
 
 private:
 	std::queue<T> queue;
 	std::mutex mtx, outmtx, result_matrix_mtx;
-	std::condition_variable producerCV, consumerCV;
+	std::condition_variable consumerCV;
 	bool closed;
 	const size_t max_size = 100000;
 	Matrix *matrix1, *matrix2, *matrix3;
 	int** product_matrix;
-	unsigned finished_tasks;
 
 	int rc_multiply(unsigned row, unsigned column);
 };
@@ -41,7 +40,6 @@ ProducerConsumerQueue<T>::ProducerConsumerQueue(Matrix & matrix1, Matrix & matri
 	this->matrix1 = &matrix1;
 	this->matrix2 = &matrix2;
 	this->matrix3 = &matrix3;
-	this->finished_tasks = 0;
 	this->closed = false;
 
 	unsigned rows = this->matrix1->rows;
@@ -69,8 +67,9 @@ void ProducerConsumerQueue<T>::enqueue(T value)
 		if (this->queue.size() <= max_size) {
 			this->queue.push(value);
 			/*outmtx.lock();
-			std::cout << "Enqueued new value. " << " Size = " << this->queue.size() << std::endl;
-			outmtx.unlock();*/
+			std::cout << "Enqueued new value. " << value << " Size = " << this->queue.size() << std::endl;
+			outmtx.unlock();
+			*/
 			this->consumerCV.notify_one(); 
 			return;
 		}
@@ -126,6 +125,9 @@ void ProducerConsumerQueue<T>::producer(unsigned start, unsigned end)
 		unsigned row = i / matrix2->columns;
 		unsigned column = i % matrix2->columns;
 		int product = this->rc_multiply(row, column);
+		outmtx.lock();
+		std::cout << "row: " << row << " column: " << column << " result: " << product << std::endl;
+		outmtx.unlock();
 		this->enqueue(MultiplicationResult(row, column, product));
 	}
 }
@@ -138,29 +140,19 @@ void ProducerConsumerQueue<T>::consumer(unsigned id)
 		if (optResult.has_value()) {
 			MultiplicationResult result = optResult.value();
 			for (unsigned i = 0; i < this->matrix3->columns; i++) {
+				outmtx.lock();
+				std::cout << "Consumer " << id << " computed [" << result.row << "][" << i << "]" << std::endl;
+				outmtx.unlock();
 				result_matrix_mtx.lock();
 				this->product_matrix[result.row][i] += result.result * this->matrix3->matrix[result.column][i];
-				this->finished_tasks++;
 				result_matrix_mtx.unlock();
-				/*outmtx.lock();
-				std::cout << "Consumer " << id << " computed [" << result.row << "][" << i << "]" << std::endl;
-				outmtx.unlock();*/
 			}
 		}
 		else {
-			/*outmtx.lock();
+			outmtx.lock();
 			std::cout << "Consumer " << id << " exiting.." << std::endl;
-			outmtx.unlock();*/
+			outmtx.unlock();
 			return;
 		}
 	}
 }
-
-template<typename T>
-inline bool ProducerConsumerQueue<T>::finished()
-{
-	if (this->finished_tasks != 4)
-		return false;
-	return true;
-}
-

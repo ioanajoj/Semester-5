@@ -25,23 +25,23 @@ int main()
 
 	srand(time(NULL));
 	
-	/*
+	
 	int m1[100][100] = { {1,2,3},{4,0,1} };
 	int m2[100][100] = { {0,3}, {2,5}, {8,7} };
 	int m3[100][100] = { {4,6}, {9,0} };
-	*/
-	unsigned m1_r = 300, m1_c = 50;
+	
+	unsigned m1_r = 300, m1_c = 300;
 	unsigned m2_r = m1_c, m2_c = 300;
 	unsigned m3_r = m1_r, m3_c = m2_c;
-	Matrix matrix1 = Matrix("a", m1_r, m1_c, createMatrix(m1_r, m1_c));
-	Matrix matrix2 = Matrix("b", m2_r, m2_c, createMatrix(m2_r, m2_c));
-	Matrix matrix3 = Matrix("c", m3_r, m3_c, createMatrix(m3_r, m3_c));
+	Matrix matrix1 = Matrix("a", 2, 3, m1);
+	Matrix matrix2 = Matrix("b", 3, 2, m2);
+	Matrix matrix3 = Matrix("c", 2, 2, m3);
 
 	std::cout << matrix1 << std::endl;
 	std::cout << matrix2 << std::endl;
 	std::cout << matrix3 << std::endl;
 
-	MatrixMultiplier matrixMultiplier(4, 4, matrix1, matrix2, matrix3);
+	MatrixMultiplier matrixMultiplier(8, 8, matrix1, matrix2, matrix3);
 	
 	auto startTime = std::chrono::high_resolution_clock::now();
 	Matrix *result = matrixMultiplier.multiply();

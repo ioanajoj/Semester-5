@@ -17,9 +17,8 @@ private:
 	Matrix *m1, *m2, *m3;
 	int** product_matrix;
 
+	std::mutex mtx;
 	std::condition_variable producerCV, consumerCV;
 	unsigned noOfProducerThreads, noOfConsumerThreads;
-
-	std::mutex mtx;
 };
 
