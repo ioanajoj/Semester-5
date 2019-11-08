@@ -68,14 +68,14 @@ void ProducerConsumerQueue<T>::enqueue(T value)
 	while (true) {
 		if (this->queue.size() <= max_size) {
 			this->queue.push(value);
-			outmtx.lock();
+			/*outmtx.lock();
 			std::cout << "Enqueued new value. " << " Size = " << this->queue.size() << std::endl;
-			outmtx.unlock();
+			outmtx.unlock();*/
 			this->consumerCV.notify_one(); 
 			return;
 		}
 		else {
-			std::cout << "Exceeded maximum size of queue." << std::endl;
+			//std::cout << "Exceeded maximum size of queue." << std::endl;
 		}
 	}
 }
@@ -142,15 +142,15 @@ void ProducerConsumerQueue<T>::consumer(unsigned id)
 				this->product_matrix[result.row][i] += result.result * this->matrix3->matrix[result.column][i];
 				this->finished_tasks++;
 				result_matrix_mtx.unlock();
-				outmtx.lock();
+				/*outmtx.lock();
 				std::cout << "Consumer " << id << " computed [" << result.row << "][" << i << "]" << std::endl;
-				outmtx.unlock();
+				outmtx.unlock();*/
 			}
 		}
 		else {
-			outmtx.lock();
+			/*outmtx.lock();
 			std::cout << "Consumer " << id << " exiting.." << std::endl;
-			outmtx.unlock();
+			outmtx.unlock();*/
 			return;
 		}
 	}

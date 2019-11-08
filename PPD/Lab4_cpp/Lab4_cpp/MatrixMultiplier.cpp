@@ -6,6 +6,7 @@
 #include <mutex>
 #include <future>
 #include <string>
+#include <assert.h>
 
 MatrixMultiplier::MatrixMultiplier(unsigned noOfProducerThreads, unsigned noOfConsumerThreads, Matrix & m1, Matrix & m2, Matrix & m3)
 {
@@ -23,6 +24,10 @@ MatrixMultiplier::~MatrixMultiplier()
 
 Matrix* MatrixMultiplier::multiply()
 {
+	assert(this->m1->columns == this->m2->rows);
+	assert(this->m1->rows == this->m3->rows);
+	assert(this->m2->columns == this->m3->columns);
+
 	// define parameters for product matrix
 	unsigned rows = m1->rows;
 	unsigned columns = m2->columns;
@@ -66,8 +71,6 @@ Matrix* MatrixMultiplier::multiply()
 	// wait for consumers to finish
 	for (auto& consumer : consumers)
 		consumer.join();
-
-	//while (!this->pcQueue->finished()) {}
 
 	return this->pcQueue->get_result_matrix();
 }

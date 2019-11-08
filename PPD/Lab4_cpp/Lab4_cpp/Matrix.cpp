@@ -14,9 +14,9 @@ int multiply_lc(unsigned i, unsigned j, Matrix matrix1, Matrix matrix2)
 	int product = 0;
 	for (unsigned cell = 0; cell < matrix1.columns; cell++)
 		product += matrix1.matrix[i][cell] * matrix2.matrix[cell][j];
-	mtx.lock();
+	/*mtx.lock();
 	std::cout << matrix1.name << "*" << matrix2.name << " line " << i << " column " << j << std::endl;
-	mtx.unlock();
+	mtx.unlock();*/
 	return product;
 }
 
@@ -107,7 +107,6 @@ Matrix operator*(Matrix const & matrix1, Matrix const & matrix2)
 	// assign work to threads
 	std::vector<std::thread> threads;
 	unsigned start, end;
-	auto startTime = std::chrono::high_resolution_clock::now();
 	for (unsigned i = 0; i < noOfThreads; i++) {
 		start = i * computationsPerThread;
 		end = (i + 1) * computationsPerThread;
@@ -118,10 +117,6 @@ Matrix operator*(Matrix const & matrix1, Matrix const & matrix2)
 	// wait for threads to finish
 	for (auto& thread : threads)
 		thread.join();
-
-	// stop timing
-	auto endTime = std::chrono::high_resolution_clock::now();
-	std::cout << "Time needed to do multiplication: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
 
 	// create new matrix
 	return Matrix(matrix1.name + " * " + matrix2.name, rows, columns, product_matrix);

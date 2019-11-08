@@ -27,9 +27,6 @@
     <ClInclude Include="MatrixMultiplier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RCMultiplier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MultiplicationResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,9 +42,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MatrixMultiplier.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RCMultiplier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MultiplicationResult.cpp">
