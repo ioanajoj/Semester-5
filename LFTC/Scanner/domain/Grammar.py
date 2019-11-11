@@ -1,8 +1,6 @@
 import json
 import re
 
-from domain.FiniteAutomaton import FiniteAutomaton
-
 
 class Grammar:
     def __init__(self):
@@ -16,6 +14,37 @@ class Grammar:
         self.initial_symbol = None
         # epsilon symbol
         self.epsilon = "@"
+
+    def construct_from_fa(self, finite_automaton):
+        # set initial symbol
+        self.initial_symbol = "S"
+        # set terminals
+        [self.terminals.add(symbol) for symbol in finite_automaton.input_symbols]
+        # map states to nonterminals
+        finite_automaton.states.remove(finite_automaton.initial_state)
+        state_nonterminal_map = {finite_automaton.initial_state: self.initial_symbol}
+        for state in finite_automaton.states:
+            state_nonterminal_map[state] = chr(ord('A') + len(state_nonterminal_map.keys()) - 1)
+
+        # translate productions
+        productions = []
+        for (state1, input_symbol), state2 in finite_automaton.transition_function.items():
+            nonterminal = state_nonterminal_map[state1]
+            production = [p for p in productions if p.nonterminals == nonterminal]
+            if not production:
+                production = Production(nonterminal, [])
+            else:
+                production = production[0]
+            for s in state2:
+                production.results.append(str(input_symbol) + str(state_nonterminal_map[s]))
+                # handle final states in rhs productions
+                if s in finite_automaton.final_states:
+                    production.results.append(str(input_symbol))
+                productions.append(production)
+        [self.productions.add(p) for p in productions]
+
+        # add nonterminals
+        [self.nonterminals.add(n) for n in state_nonterminal_map.values()]
 
     def is_right_linear(self) -> bool:
         """
@@ -67,43 +96,6 @@ class Grammar:
                 return True
         return False
 
-    def construct_finite_automaton(self) -> FiniteAutomaton:
-        finite_automaton = FiniteAutomaton()
-
-        # set initial_state
-        initial_state = "q0"
-        finite_automaton.initial_state = initial_state
-        # add final state
-        final_state = "qf"
-        finite_automaton.final_states.add(final_state)
-
-        # set input symbols
-        [finite_automaton.input_symbols.add(terminal) for terminal in self.terminals]
-
-        # create transition function
-        results = dict()
-        for production in self.productions:
-            # check if initial symbol produces epsilon => initial state is also final
-            if production.nonterminals == self.initial_symbol and self.epsilon in production.results:
-                finite_automaton.final_states.add(initial_state)
-            for result in production.results:
-                if result == self.epsilon:
-                    continue
-                # rule of the form (A -> x) => transition_function[(A,F)] = x, where F = final state
-                if result in self.terminals:
-                    finite_automaton.transition_function[(production.nonterminals, result)] = final_state
-                # rule of the form (A -> xB) => transition_function[(A,B)] = x
-                elif result[1] in self.nonterminals:
-                    if result[1] not in results.keys():
-                        new_state = "q" + str(len(finite_automaton.states) + 1)
-                        finite_automaton.states.add(new_state)
-                        results[result[1]] = new_state
-                    finite_automaton.transition_function[(production.nonterminals, result[0])] = results[result[1]]
-
-        finite_automaton.states.add(initial_state)
-        finite_automaton.states.add(final_state)
-        return finite_automaton
-
     def read_file(self, filename) -> None:
         with open(filename) as json_data:
             data = json.load(json_data)
@@ -137,11 +129,6 @@ class Production:
         self.nonterminals = nonterminals
         # list of | delimited productions
         self.results = results
-
-    def is_regular(self) -> bool:
-        if len(self.nonterminals) != 1:
-            return False
-        return False
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, Production):
