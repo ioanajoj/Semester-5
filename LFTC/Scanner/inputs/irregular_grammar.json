@@ -2,9 +2,9 @@
   "nonterminals": ["S", "A", "B"],
   "terminals": ["a", "b", "c"],
   "productions": {
-    "S": "@|aA|bB",
-    "A": "aA|bB",
-    "B": "a|b|c"
+    "S": "ε",
+    "A": "aS|ab",
+    "B": "cB|c"
   },
   "initial_symbol": "S"
 }

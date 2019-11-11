@@ -14,7 +14,10 @@ class FiniteAutomaton:
         # transition function
         self.transition_function = dict()
 
-    def read_file(self, filename):
+    # def construct_regular_grammar(self) -> Grammar():
+    #     return Grammar()
+
+    def read_file(self, filename) -> None:
         with open(filename) as json_data:
             data = json.load(json_data)
             self.states = set(data["Q"])

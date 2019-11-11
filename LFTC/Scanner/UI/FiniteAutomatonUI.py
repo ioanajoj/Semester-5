@@ -6,7 +6,7 @@ class FiniteAutomatonUI:
     def __init__(self, finite_automaton):
         self.finite_automaton = finite_automaton
 
-    def show_elements(self):
+    def show_elements(self) -> None:
         menu = FiniteAutomatonUI.__get_show_menu()
         while True:
             print(menu)
@@ -28,7 +28,7 @@ class FiniteAutomatonUI:
             except ValueError:
                 print("Invalid command.")
 
-    def read_user_input(self):
+    def read_user_input(self) -> None:
         menu = FiniteAutomatonUI.__get_read_menu()
         while True:
             print(menu)
@@ -53,7 +53,7 @@ class FiniteAutomatonUI:
                 continue
         print("You exited configuration manager!")
 
-    def __add_states(self):
+    def __add_states(self) -> None:
         while True:
             print("Enter lower case letters optionally followed by numbers or -1 to exit.")
             choice = input()
@@ -63,7 +63,7 @@ class FiniteAutomatonUI:
             else:
                 break
 
-    def __add_input_symbols(self):
+    def __add_input_symbols(self) -> None:
         while True:
             print("Enter symbol or -1 to exit.")
             choice = input()
@@ -73,7 +73,7 @@ class FiniteAutomatonUI:
                 self.finite_automaton.input_symbols.add(choice)
                 print("input symbols: " + str(self.finite_automaton.input_symbols))
 
-    def __set_initial_state(self):
+    def __set_initial_state(self) -> None:
         while True:
             print("Enter existing state or -1 to exit.")
             choice = input()
@@ -83,7 +83,7 @@ class FiniteAutomatonUI:
             else:
                 break
 
-    def __add_final_states(self):
+    def __add_final_states(self) -> None:
         while True:
             print("Enter existing states or -1 to exit.")
             choice = input()
@@ -93,7 +93,7 @@ class FiniteAutomatonUI:
             else:
                 break
 
-    def __add_transition_function(self):
+    def __add_transition_function(self) -> None:
         while True:
             print("Enter starting state or -1 to exit.")
             starting_state = input()
@@ -116,7 +116,7 @@ class FiniteAutomatonUI:
             print(result)
 
     @staticmethod
-    def __get_read_menu():
+    def __get_read_menu() -> str:
         menu = "Enter the desired option:\n"
         menu += "1. Add states.\n"
         menu += "2. Add input symbols.\n"
@@ -127,7 +127,7 @@ class FiniteAutomatonUI:
         return menu
 
     @staticmethod
-    def __get_show_menu():
+    def __get_show_menu() -> str:
         menu = "Enter the desired option:\n"
         menu += "1. Show states.\n"
         menu += "2. Show input symbols.\n"
