@@ -81,8 +81,9 @@ class Grammar:
         # check epsilon productions
         for production in self.productions:
             if self.epsilon in production.results:
-                if self._is_in_rhs(production.nonterminals):
+                if self.initial_symbol != production.nonterminals or self._is_in_rhs(production.nonterminals):
                     return False
+
         return True
 
     def _is_in_rhs(self, nonterminal):
@@ -92,8 +93,9 @@ class Grammar:
         :return: True if found, False otherwise
         """
         for production in self.productions:
-            if nonterminal in production.results:
-                return True
+            for result in production.results:
+                if nonterminal in result:
+                    return True
         return False
 
     def read_file(self, filename) -> None:
