@@ -7,47 +7,49 @@
 #include <algorithm>
 
 
-MillerRabinTest::MillerRabinTest(unsigned int n, unsigned int k)
+MillerRabinTest::MillerRabinTest()
 {
-	if (n < 3)
-		throw InvalidInputException("The tested number should have a natural value equal or greater than 3.");
-	if (k < 1)
-		throw InvalidInputException("The number of retries k should be at least 1.");
-	this->n = n;
-	this->k = k;
 }
 
 
-void MillerRabinTest::step0()
+std::pair<int, int> MillerRabinTest::find_s_t(unsigned int n)
 {
 	double aux_t = 0, aux_s = -1;
+	unsigned int s, t;
 	do {
-		this->s = aux_s++;
-		this->t = aux_t;
-		int division = std::pow(2, this->s);
-		aux_t = (this->n - 1) / std::pow(2, this->s);
+		s = aux_s++;
+		t = aux_t;
+		int division = std::pow(2, s);
+		aux_t = (n - 1) / std::pow(2, s);
 	} while (is_integer(aux_t));
 	
-	if (this->t % 2 == 0)
+	if (t % 2 == 0)
 		throw InvalidInputException("Numbers given as input fail step 0 verification.");
+
+	return std::pair<int, int>(s, t);
 }
 
 unsigned int MillerRabinTest::choose_random_a(unsigned int upper_bound)
 {
 	// initialize random seed
 	srand(time(NULL));
-	//return (rand() % (upper_bound - 2)) + 2;
-	return 2;
+	return (rand() % (upper_bound - 2)) + 2;
 }
 
-bool MillerRabinTest::test()
+bool MillerRabinTest::test(unsigned int n, unsigned int k)
 {
-	step0();
-	for (int i = 0; i < this->k; i++)
+	if (n < 3)
+		throw InvalidInputException("The tested number should have a natural value equal or greater than 3.");
+	if (k < 1)
+		throw InvalidInputException("The number of retries k should be at least 1.");
+
+	std::pair<int, int> pair = this->find_s_t(n);
+	unsigned int s = pair.first, t = pair.second;
+	for (int i = 0; i < k; i++)
 	{
-		unsigned int random_a = this->choose_random_a(this->n);
-		std::vector<int> sequence = this->get_multiplication_sequence(random_a, this->s, this->t);
-		if (!this->check_multiplication_sequence(sequence))
+		unsigned int random_a = this->choose_random_a(n);
+		std::vector<int> sequence = this->get_multiplication_sequence(n, random_a, s, t);
+		if (!this->check_multiplication_sequence(n, sequence))
 			return false;
 	}
 	return true;
@@ -58,24 +60,24 @@ bool MillerRabinTest::is_integer(float number)
 	return std::floor(number) == number; 
 }
 
-std::vector<int> MillerRabinTest::get_multiplication_sequence(unsigned int a, unsigned int s, unsigned int t)
+std::vector<int> MillerRabinTest::get_multiplication_sequence(unsigned int n, unsigned int a, unsigned int s, unsigned int t)
 {
 	std::vector<int> sequence;
-	int res = this->repeated_squaring_modular_exponentiation(a, t, this->n);
+	int res = this->repeated_squaring_modular_exponentiation(a, t, n);
 	sequence.push_back(res);
 	for (int i = 1; i < s; i++)
 	{
-		res = res * res % this->n;
+		res = res * res % n;
 		sequence.push_back(res);
 	}
 	return sequence;
 }
 
-bool MillerRabinTest::check_multiplication_sequence(std::vector<int> sequence)
+bool MillerRabinTest::check_multiplication_sequence(unsigned int n, std::vector<int> sequence)
 {
 	if (sequence[0] == 1)
 		return true;
-	unsigned int n_minus_1 = this->n - 1, sequence_size = sequence.size();
+	unsigned int n_minus_1 = n - 1, sequence_size = sequence.size();
 	for (int i = 1; i < sequence_size; i++)
 		if (sequence[i] == 1 || sequence[i-1] == n_minus_1)
 			return true;
@@ -84,9 +86,6 @@ bool MillerRabinTest::check_multiplication_sequence(std::vector<int> sequence)
 
 unsigned int MillerRabinTest::repeated_squaring_modular_exponentiation(unsigned int base, unsigned short int power, unsigned short int modulo)
 {
-	std::bitset<16> bitset_of_power(power);
-	std::cout << "Bitset of " << power << " " << bitset_of_power << std::endl;
-
 	std::vector<int> set_bits;
 	int leftmost_set_bit = 0;
 	while (power != 0)

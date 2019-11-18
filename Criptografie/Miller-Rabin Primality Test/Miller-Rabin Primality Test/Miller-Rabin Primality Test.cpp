@@ -6,9 +6,14 @@ int main()
 {
     std::cout << "Hello World!\n";
 	
-	MillerRabinTest millerRabinTest(409, 3);
+	unsigned int number = 413, tries = 3;
+
+	MillerRabinTest millerRabinTest;
 	std::cout << "Computer Miller Rabin Test: " << std::endl;
-	std::cout << millerRabinTest.test() << std::endl;
+	if (millerRabinTest.test(number, tries))
+		std::cout << "Number " << number << " should be prime." << std::endl;
+	else
+		std::cout << "Number " << number << " is not prime." << std::endl;
 
 	std::cout << "Bye World!\n";
 }
