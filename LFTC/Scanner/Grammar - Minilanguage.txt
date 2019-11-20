@@ -1,0 +1,66 @@
+Grammar for Minilanguage
+
+    ---------------------
+    |   NONTERMINALS    |
+    ---------------------
+
+<program>, <list_stmt>, <stmt>, <assignstmt>, <iostmt>, <ifstmt>, <condition>, <relation>, <whilestmt>,
+<expression>, <element>, <integer>, <bool>, <string>, <list_char>, <char>, <collection>, <list_element>,
+<identifier>, <id_aux>, <digits, <nz_digit>, <digit>, <letter>, <letters>
+
+
+    ---------------------
+    |     TERMINALS     |
+    ---------------------
+
+0, 1, .., 9, a, b, .., z, +, -, *, /, <, <=, =>, >, <>,
+eq, and, or, True, False, [, ], (, ), ", while, if, else,
+begin, end, print, input, is, _
+
+    ---------------------
+    |    PRODUCTIONS    |
+    ---------------------
+
+<program>       -> begin <list_stmt> end
+<list_stmt>     -> <stmt> | <stmt>, <list_stmt>
+<stmt>          ::= <assignstmt> | <iostmt> | <ifstmt> | <whilestmt>
+<assignstmt>    ::= <identifier> is <expression>
+<iostmt>        ::= print( <identifier> ) | print( <integer> |
+                    input( <identifier> )
+<ifstmt>        ::= if <condition> <stmt> |
+                    if <condition> <stmt> else <stmt>
+<condition>     ::= <expression> | <expression> <relation> <expression>
+<relation>      ::= < | <= | <> | eq | >= | > | and | or
+<whilestmt>     ::= while <condition> <stmt>
+
+/* DEFINING AN EXPRESSION */
+<expression>    ::= <element> | <element> + <element> | <element> - <element>
+                                <element> * <element> | <element> / <element>
+
+/* DEFINING AN ELEMENT */
+<element>       ::= <identifier> | <integer> | <bool> | <string> | <collection>
+<integer>       ::= <nz_digit> | <nz_digit><digits>
+<bool>          ::= True | False
+<string>        ::= " <list_char> "
+<list_char>     ::= <char> | <char><list_char>
+<char>          ::= <letter> | <digit>
+<collection>    ::= [] | [ <list_element> ]
+<list_element>  ::= <element> | <element>, <list_element>
+
+/* DEFINING AN IDENTIFIER */
+<identifier>    ::= <letter> | <letter><id_aux>
+<id_aux>        ::= <letter> | <digits> | _ | <letter><id_aux> |
+                    <digits><id_aux> | _<id_aux>
+<digits>        ::= <digit> | <digit><digits>
+<nz_digit>      ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+<digit>         ::= 0 | <nz_digit>
+<letters>       ::= <letter> | <letter><letters>
+<letter>        ::= a | b | c | ... | z
+
+    ---------------------
+    |  INITIAL SYMBOL   |
+    ---------------------
+
+<program>
+
+
