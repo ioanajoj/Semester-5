@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <iostream>
 #include <algorithm>
 #include <ctime>
@@ -51,7 +50,7 @@ void multiply_parallel(int noOfThreads, long long *A, int m, long long *B, int n
 
 	// End chronometer
 	auto endTime = std::chrono::high_resolution_clock::now();
-	std::cout << "Time needed to multiply in parallel: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
+	std::cout << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
 	
 //	Polynomial_Utils::print_polynomial("C", C, size_C);
 }
@@ -70,42 +69,48 @@ void multiply_sequncial(long long *A, int m, long long *B, int n)
 			C[i + j] += A[i] * B[j];
 
 	auto endTime = std::chrono::high_resolution_clock::now();
-	std::cout << "Time needed to multiply sequencially: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
+	std::cout << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
 	
-	Polynomial_Utils::print_polynomial("C", C, size_C);
+//	Polynomial_Utils::print_polynomial("C", C, size_C);
 }
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::cout << "Hello World!\n"; 
+	if (argc != 3)
+	{
+		std::cout << "No enough arguments provided!";
+		return(0);
+	}
+
+	int algorithm = atoi(argv[1]);
+	int size = atoi(argv[2]);
+
+	if (algorithm < 1 || algorithm > 4)
+	{
+		std::cout << "Algorithm number should be between 1 and 4";
+		return(0);
+	}
+
 	srand(time(NULL));
-
-	int m = 4, n = 4;
 	
-//	long long *A = Polynomial_Utils::get_rand_polynomial(m);
-//	long long *B = Polynomial_Utils::get_rand_polynomial(n);
-
-	long long *A = new long long[m];
-	A[0] = 5;
-	A[1] = 0;
-	A[2] = 10;
-	A[3] = 6;
-	long long *B = new long long[n];
-	B[0] = 1;
-	B[1] = 2; 
-	B[2] = 4;
-	B[3] = 1;
-
-	Polynomial_Utils::print_polynomial("A", A, m);
-	Polynomial_Utils::print_polynomial("B", B, n);
+	int m = size, n = size;
 	
-	Karatsuba_Polynomials::multiply(A, m, B, n);
-	Karatsuba_Polynomials kp(1);
-//	kp.multiply_async(A, m, B, n);
-//	multiply_sequncial(A, m, B, n);
-//	multiply_parallel(4, A, m, B, n);
+	long long *A = Polynomial_Utils::get_rand_polynomial(m);
+	long long *B = Polynomial_Utils::get_rand_polynomial(n);
 
-	std::cout << "Bye World!\n";
+//	Polynomial_Utils::print_polynomial("A", A, m);
+//	Polynomial_Utils::print_polynomial("B", B, n);
+	
+	if (algorithm == 1)
+		multiply_sequncial(A, m, B, n);
+	if (algorithm == 2)
+		multiply_parallel(3, A, m, B, n);
+	if (algorithm == 3)
+		Karatsuba_Polynomials::multiply(A, m, B, n);
+	if (algorithm == 4)
+	{
+		Karatsuba_Polynomials::multiply_async(A, m, B, n);
+	}
 }

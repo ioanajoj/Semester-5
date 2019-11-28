@@ -1,14 +1,12 @@
-#include "pch.h"
 #include "Karatsuba_Polynomials.h"
 #include <iostream>
 #include <chrono>
 #include "Polynomial_Utils.h"
 #include <algorithm>
+#include <string>
 
-
-Karatsuba_Polynomials::Karatsuba_Polynomials(int noOfThreads)
+Karatsuba_Polynomials::Karatsuba_Polynomials()
 {
-	this->noOfThreads = noOfThreads;
 }
 
 
@@ -26,16 +24,18 @@ void basic_poly_multiplication(long long *A, long long *B, int size, long long *
 
 void Karatsuba_Polynomials::karatsuba(long long *A, long long *B, int size, long long *C)
 {
+//	std::cout << thread_name << std::endl;
+
 	long long *t0 = new long long[size];
 	long long *t1 = new long long[size];
 	long long *res = new long long[size << 1];
 	memset(res, 0, (size << 1) * sizeof(long long));
 
-	std::cout << "Karatsuba call with size: " << size << "\n";
-	Polynomial_Utils::print_polynomial("A karatsuba: ", A, size);
-	Polynomial_Utils::print_polynomial("B karatsuba: ", B, size);
+//	std::cout << "Karatsuba call with size: " << size << "\n";
+//	Polynomial_Utils::print_polynomial("A karatsuba: ", A, size);
+//	Polynomial_Utils::print_polynomial("B karatsuba: ", B, size);
 
-	if (size <= 2)
+	if (size <= 4)
 	{
 		basic_poly_multiplication(A, B, size, res);
 	}
@@ -95,23 +95,23 @@ void Karatsuba_Polynomials::multiply(long long * A, int m, long long * B, int n)
 
 	// End chronometer
 	auto endTime = std::chrono::high_resolution_clock::now();
-	std::cout << "Time needed to multiply sequentially with Karatsuba: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
+	std::cout << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
 
-	Polynomial_Utils::print_polynomial("C", C,size_C);
+//	Polynomial_Utils::print_polynomial("C", C,size_C);
 }
 
-void Karatsuba_Polynomials::karatsuba_async(long long * A, long long * B, int size, long long * C, int rank)
+void Karatsuba_Polynomials::karatsuba_async(long long * A, long long * B, int size, long long * C)
 {
 	long long *t0 = new long long[size];
 	long long *t1 = new long long[size];
 	long long *res = new long long[size << 1];
 	memset(res, 0, (size << 1) * sizeof(long long));
 
-	std::cout << "Karatsuba call with size: " << size << "\n";
-	Polynomial_Utils::print_polynomial("A karatsuba: ", A, size);
-	Polynomial_Utils::print_polynomial("B karatsuba: ", B, size);
+//	std::cout << "Karatsuba call with size: " << size << "\n";
+//	Polynomial_Utils::print_polynomial("A karatsuba: ", A, size);
+//	Polynomial_Utils::print_polynomial("B karatsuba: ", B, size);
 
-	if (size <= 2)
+	if (size <= 4)
 	{
 		basic_poly_multiplication(A, B, size, res);
 	}
@@ -128,9 +128,19 @@ void Karatsuba_Polynomials::karatsuba_async(long long * A, long long * B, int si
 		}
 
 		// res[half...size] = (a+b) (c+d)
-		karatsuba(t0, t1, half, res + half);
-		karatsuba(A, B, half, t0);
-		karatsuba(A + half, B + half, half, t1);
+		std::thread thread1([t0, t1, half, res]() {
+			karatsuba(t0, t1, half, res + half);
+		});
+		std::thread thread2([A, B, half, t0]() {
+			karatsuba(A, B, half, t0);
+		});
+		std::thread thread3([A, B, half, t1]() {
+			karatsuba(A + half, B + half, half, t1);
+		});
+
+		thread1.join();
+		thread2.join();
+		thread3.join();
 
 		for (int i = 0; i < size; i++) {
 			res[i] += t0[i];
@@ -166,21 +176,12 @@ void Karatsuba_Polynomials::multiply_async(long long * A, int m, long long * B, 
 	// Start chronometer
 	auto startTime = std::chrono::high_resolution_clock::now();
 
-	/*int coefPerThread = ceil(n / (double)noOfThreads);
-	int begin, end;
-	for (int i = 0; i < noOfThreads; i++)
-	{
-		// divide polynoms by the number of coefPerThread
-		begin = i * coefPerThread;
-		end = (i + 1) * coefPerThread;
-		karatsuba_async(A + begin, B + begin, end - begin, C + begin);
-	}*/
-	karatsuba_async(A, B, n, C, 0);
+	karatsuba_async(A, B, size, C);
 	if (m > n)  basic_poly_multiplication(A + n, B, m - n, C);
 
 	// End chronometer
 	auto endTime = std::chrono::high_resolution_clock::now();
-	std::cout << "Time needed to multiply in parallel with Karatsuba: " << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
+	std::cout << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
 
-	Polynomial_Utils::print_polynomial("C", C,size_C);
+//	Polynomial_Utils::print_polynomial("C", C, size_C);
 }

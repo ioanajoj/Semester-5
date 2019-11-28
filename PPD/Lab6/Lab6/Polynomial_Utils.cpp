@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Polynomial_Utils.h"
 #include <iostream>
 
