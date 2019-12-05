@@ -19,4 +19,13 @@ public class IntPositionPair {
     public int getValue() {
         return value;
     }
+
+    public boolean isDefault() {
+        return position == -1 && value == -1;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + position + ", " + value + ')';
+    }
 }

@@ -7,32 +7,32 @@ import java.util.stream.Collectors;
 /**
  * @author joj on 12/5/2019
  **/
-public class FinalTask extends SimpleTask {
-    private BigNumber result;
+public class NumberAndQueueTask extends SimpleTask {
+    private BigNumber bigNumber;
 
-    public FinalTask() { }
-
-    public BigNumber getResult() {
-        return result;
+    public NumberAndQueueTask(BigNumber bigNumber) {
+        super(0);
+        this.bigNumber = bigNumber;
     }
 
-    @Override
-    public void run() {
+    public BigNumber getResult() {
         this.queue.sort(Comparator.comparingInt(IntPositionPair::getPosition));
         int i = 0, carry = 0;
         StringBuilder stringBuilder = new StringBuilder();
-        while(this.queue.size() > 0) {
+        do {
             int finalI = i;
             List<IntPositionPair> filtered = this.queue.stream().filter(pair -> pair.getPosition() == finalI).collect(Collectors.toList());
             this.queue.removeAll(filtered);
             int sum = filtered.stream().map(IntPositionPair::getValue).reduce(0, Integer::sum);
             sum += carry;
+            if (i < this.bigNumber.getSize())
+                sum += this.bigNumber.getDigit(finalI);
             stringBuilder.append(sum % 10);
             carry = sum /10;
             i ++;
-        }
+        } while(!finalQueue(1));
         if (carry != 0)
             stringBuilder.append(carry);
-        this.result = new BigNumber(stringBuilder.reverse().toString());
+        return new BigNumber(stringBuilder.reverse().toString());
     }
 }

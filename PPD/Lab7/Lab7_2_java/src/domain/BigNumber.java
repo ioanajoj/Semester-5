@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author joj on 11/26/2019
@@ -21,20 +22,16 @@ public class BigNumber {
             this.digits.add(i, Character.getNumericValue(str.charAt(i)));
     }
 
-    public int getNumber() {
-        int result = 0, position = 1, carry = 0, current;
-        for (int i = 0; i < size; i++) {
-            current = this.digits.get(i) + carry;
-            result = result + ( position * ( current % 10 ) );
-            carry = current / 10;
-            position *= 10;
-        }
-        if (carry != 0)
-            result += position * carry;
-        return result;
+    public int getDigit(int position) {
+        return this.digits.get(position);
     }
 
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        return digits.stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 }
