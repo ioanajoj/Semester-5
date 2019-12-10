@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Hello World!");
 
-        DirectedGraph directedGraph = new DirectedGraph(100, true);
+        DirectedGraph directedGraph = new DirectedGraph(1000, true);
 
         findHamiltonianCycle(directedGraph, 1);
         findHamiltonianCycle(directedGraph, 2);
@@ -28,12 +28,13 @@ public class Main {
     public static void findHamiltonianCycle(DirectedGraph graph, int threadCount) throws InterruptedException {
         ExecutorService pool = Executors.newFixedThreadPool(threadCount);
         List<Integer> result = new ArrayList<>(graph.getSize());
+        Boolean found = false;
         Lock lock = new ReentrantLock();
 
         long start = System.currentTimeMillis();
 
         for (int node = 0; node < graph.getSize(); node++)
-            pool.execute(new FindHamiltonianCycle(graph, node, result, lock));
+            pool.execute(new FindHamiltonianCycle(graph, node, result, found, lock));
 
         shutdownAndAwaitTermination(pool);
 

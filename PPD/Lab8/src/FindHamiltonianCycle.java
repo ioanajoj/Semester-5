@@ -11,12 +11,14 @@ public class FindHamiltonianCycle implements Runnable{
     private DirectedGraph graph;
     private int startingNode;
     private List<Integer> result;
-    private Lock lock;
+    Boolean found;
+    Lock lock;
 
-    public FindHamiltonianCycle(DirectedGraph graph, int startingNode, List<Integer> result, Lock lock) {
+    public FindHamiltonianCycle(DirectedGraph graph, int startingNode, List<Integer> result, Boolean found, Lock lock) {
         this.graph = graph;
         this.startingNode = startingNode;
         this.result = result;
+        this.found = found;
         this.lock = lock;
     }
 
@@ -27,6 +29,7 @@ public class FindHamiltonianCycle implements Runnable{
     }
 
     private void visit(List<Integer> path, int node) {
+        if (found) return;
         path.add(node);
         if (path.size() == graph.getSize())
             if (graph.getNeighbourhood(node).contains(startingNode)) {
@@ -39,10 +42,11 @@ public class FindHamiltonianCycle implements Runnable{
     }
 
     private void setResult(List<Integer> path) {
-        this.lock.lock();
+        lock.lock();
+        this.found = true;
         this.result.clear();
         this.result = new ArrayList<>(path);
         this.result.addAll(path);
-        this.lock.unlock();
+        lock.unlock();
     }
 }
