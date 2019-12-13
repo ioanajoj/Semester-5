@@ -185,3 +185,54 @@ void Karatsuba_Polynomials::multiply_async(long long * A, int m, long long * B, 
 
 //	Polynomial_Utils::print_polynomial("C", C, size_C);
 }
+
+void karatsuba_worker(int tid, long long * A, int m, long long * B, int n, int no_of_threads, long long *C, int size_C)
+{
+	for (int s = tid; s < m - 1; s += no_of_threads)
+	{
+		if (s > m)
+			break;
+		C[2 * s] += A[s] * B[s];
+		for (int t = s + 1; t < m; t++)
+			C[s + t] += (A[s] + A[t])*(B[s] + B[t]) - A[s] * B[s] - A[t] * B[t];
+	}
+}
+
+void Karatsuba_Polynomials::multiply_threads(long long * A, int m, long long * B, int n, int no_of_threads)
+{
+	int new_m = m, new_n = n;
+	if (m % 2 != 0) new_m += 1;
+	if (n % 2 != 0) new_n += 1;
+	if (new_m < new_n) new_m = new_n;
+	if (new_m != m) A = Polynomial_Utils::extend_polynomial(A, m, new_m);
+	if (new_n != n) B = Polynomial_Utils::extend_polynomial(B, n, new_n);
+	m = new_m;
+	n = new_n;
+
+	int size = n;
+	int size_C = m + n - 1;
+
+	// Create resulting polynomial having all coefficients equal to 0
+	long long *C = new long long[size_C];
+	for (int i = 0; i < size_C; i++)
+		C[i] = 0;
+
+	std::vector<std::thread> threads;
+
+	// Start chronometer
+	auto startTime = std::chrono::high_resolution_clock::now();
+
+	for (int tid = 0; tid < no_of_threads; tid++)
+	{
+		threads.emplace_back([tid, A, m, B, n, no_of_threads, C, size_C]() {karatsuba_worker(tid, A, m, B, n, no_of_threads, C, size_C); });
+	}
+
+	for (int tid = 0; tid < no_of_threads; tid++)
+		threads[tid].join();
+
+	// End chronometer
+	auto endTime = std::chrono::high_resolution_clock::now();
+	std::cout << std::chrono::duration <double, std::milli>(endTime - startTime).count() << std::endl;
+
+//	Polynomial_Utils::print_polynomial("C", C, size_C);
+}

@@ -15,5 +15,7 @@ public:
 	/* async */
 	static void karatsuba_async(long long *A, long long *B, int size, long long *C);
 	static void multiply_async(long long *A, int m, long long *B, int n);
+
+	static void multiply_threads(long long *A, int m, long long *B, int n, int no_of_threads);
 };
 

@@ -87,9 +87,9 @@ int main(int argc, char *argv[])
 	int algorithm = atoi(argv[1]);
 	int size = atoi(argv[2]);
 
-	if (algorithm < 1 || algorithm > 4)
+	if (algorithm < 1 || algorithm > 5)
 	{
-		std::cout << "Algorithm number should be between 1 and 4";
+		std::cout << "Algorithm number should be between 1 and 5";
 		return(0);
 	}
 
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
 //	Polynomial_Utils::print_polynomial("A", A, m);
 //	Polynomial_Utils::print_polynomial("B", B, n);
-	
+
 	if (algorithm == 1)
 		multiply_sequncial(A, m, B, n);
 	if (algorithm == 2)
@@ -113,4 +113,6 @@ int main(int argc, char *argv[])
 	{
 		Karatsuba_Polynomials::multiply_async(A, m, B, n);
 	}
+	if (algorithm == 5)
+		Karatsuba_Polynomials::multiply_threads(A, m, B, n, 4);
 }
