@@ -14,8 +14,8 @@ public class Main {
         BigNumber bigNumber4 = new BigNumber("1023");
         BigNumber bigNumber5 = new BigNumber("456");
         BigNumber bigNumber6 = new BigNumber("789");
-        BigNumber bigNumber7 = new BigNumber("456");
-        BigNumber bigNumber8 = new BigNumber("789");
+        BigNumber bigNumber7 = new BigNumber("2104");
+        BigNumber bigNumber8 = new BigNumber("852");
 
         List<BigNumber> bigNumberList = new ArrayList<>();
         bigNumberList.add(bigNumber1);

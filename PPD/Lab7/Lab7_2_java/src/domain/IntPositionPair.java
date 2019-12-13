@@ -12,6 +12,10 @@ public class IntPositionPair {
         this.value = value;
     }
 
+    public static IntPositionPair getDefault() {
+        return new IntPositionPair(-1, -1);
+    }
+
     public int getPosition() {
         return position;
     }
