@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "ThreadPool.h"
 
 class Sequence
 {
@@ -19,5 +20,8 @@ public:
 
 	void prefix_sum();
 	//void prefix_sum_manual();
+
+	void step1(ThreadPool &pool, int &k);
+	void step2(ThreadPool &pool, int &k);
 };
 
