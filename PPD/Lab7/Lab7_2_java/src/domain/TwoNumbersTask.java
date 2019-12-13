@@ -44,7 +44,7 @@ public class TwoNumbersTask extends SimpleTask {
             consumer.enqueue(new IntPositionPair(position, carry));
         }
         consumer.enqueue(IntPositionPair.getDefault());
-        System.out.println("Task finished: " + number1 + " " + number2);
+        System.out.println("Task finished: " + number1 + " + " + number2);
     }
 
 }

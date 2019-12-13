@@ -21,43 +21,33 @@ public class AddBigNumbers {
     }
 
     public void sum() {
-        List<TwoNumbersTask> twoNumbersTasks = new ArrayList<>();
+        List<SimpleTask> tasks = new ArrayList<>();
         for (int i = 0; i < this.bigNumbers.size() - 1; i+=2) {
             TwoNumbersTask task = new TwoNumbersTask(this.bigNumbers.get(i), this.bigNumbers.get(i + 1));
-            twoNumbersTasks.add(task);
+            tasks.add(task);
         }
 
-        List<SimpleTask> simpleTasks = new ArrayList<>();
-        for (int i = 0; i < twoNumbersTasks.size() - 1; i+=2) {
-            SimpleTask task = new SimpleTask(2);
-            twoNumbersTasks.get(i).run(task);
-            twoNumbersTasks.get(i + 1).run(task);
-            simpleTasks.add(task);
-        }
-
-        int level = 4;
-        for (int i = 0; i < simpleTasks.size() - 1; i+=2) {
-            SimpleTask task = new SimpleTask(level);
-            simpleTasks.get(i).run(task);
-            simpleTasks.get(i + 1).run(task);
-            simpleTasks.add(task);
-            level *= 2;
+        int thNumber = 2;
+        for (int i = 0; i < tasks.size() - 1; i+=2) {
+            SimpleTask task = new SimpleTask(thNumber);
+            tasks.get(i).run(task);
+            tasks.get(i + 1).run(task);
+            tasks.add(task);
+            thNumber += 1;
         }
 
         try{
-            for(SimpleTask task : twoNumbersTasks)
-                task.join();
-            for(SimpleTask task : simpleTasks)
+            for(SimpleTask task : tasks)
                 task.join();
             if (this.bigNumbers.size() % 2 != 0) {
                 NumberAndQueueTask numberAndQueueTask =
                         new NumberAndQueueTask(this.bigNumbers.get(this.bigNumbers.size() - 1));
-                simpleTasks.get(simpleTasks.size() - 1).run(numberAndQueueTask);
-                simpleTasks.get(simpleTasks.size() - 1).join();
+                tasks.get(tasks.size() - 1).run(numberAndQueueTask);
+                tasks.get(tasks.size() - 1).join();
                 System.out.println(numberAndQueueTask.getResult());
             }
             else {
-                System.out.println(simpleTasks.get(simpleTasks.size() - 1).getResult());
+                System.out.println(tasks.get(tasks.size() - 1).getResult());
             }
         }catch (Exception ex) {
             ex.printStackTrace();

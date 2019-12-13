@@ -49,6 +49,7 @@ public class SimpleTask extends Thread {
             int sum = filtered.stream().map(IntPositionPair::getValue).reduce(0, Integer::sum);
             sum += carry;
             consumer.enqueue(new IntPositionPair(i, sum % 10));
+            System.out.println("T" + this.number + " sent - Pos: " + i + " Sum: " + sum % 10);
             carry = sum / 10;
             i++;
         } while (!finalQueue(2));
