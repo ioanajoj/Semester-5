@@ -12,6 +12,7 @@ public:
 	bool available = true;
 
 	void updateVariable(char variable, int value);
+	void setValue(char variable, int value);
 	void updateSubscribers(char variable, UpdateOperation updateOperation);
 	void xChangeValue(char variable, int old_value, int new_value);
 	void subscribeMe(char variable);

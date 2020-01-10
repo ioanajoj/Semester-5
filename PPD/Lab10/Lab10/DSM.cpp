@@ -19,6 +19,14 @@ DSM::~DSM()
 
 void DSM::updateVariable(char variable, int value)
 {
+	this->setValue(variable, value);
+	// Update subscribers
+	UpdateOperation updateOperation = UpdateOperation(variable, value);
+	this->updateSubscribers(variable, updateOperation);
+}
+
+void DSM::setValue(char variable, int value)
+{
 	if (isSubscribedTo(this->process_id, variable))
 	{
 		// Change value
@@ -26,9 +34,6 @@ void DSM::updateVariable(char variable, int value)
 		else if (variable == 'b') this->b = value;
 		else if (variable == 'c') this->c = value;
 	}
-	// Update subscribers
-	UpdateOperation updateOperation = UpdateOperation(variable, value);
-	this->updateSubscribers(variable, updateOperation);
 }
 
 void DSM::updateSubscribers(char variable, UpdateOperation updateOperation)

@@ -12,10 +12,11 @@ void listener(int pid, MPI_Status status, DSM *dsm)
 		MPI_Recv(metadata, 2, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 		int tag = status.MPI_TAG;
 
-		// UPDATE
 		if (tag == 1)
 		{
+			// Received an update message; metadata[0] is the variable and metadata[1] is the new value
 			std::cout << pid << ": received update." << std::endl;
+			dsm->setValue(dsm->getVariableChar(metadata[0]), metadata[1]);
 		}
 		else if (tag == 2)
 		{
