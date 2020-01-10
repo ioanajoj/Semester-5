@@ -16,6 +16,12 @@ void listener(int pid, MPI_Status status, DSM *dsm)
 		{
 			// Received an update message; metadata[0] is the variable and metadata[1] is the new value
 			std::cout << pid << ": received update." << std::endl;
+			dsm->updateVariable(dsm->getVariableChar(metadata[0]), metadata[1]);
+		}
+		else if (tag == 11)
+		{
+			// Received a set message; metadata[0] is the variable and metadata[1] is the new value
+			std::cout << pid << ": received set." << std::endl;
 			dsm->setValue(dsm->getVariableChar(metadata[0]), metadata[1]);
 		}
 		else if (tag == 2)
@@ -52,24 +58,21 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &pid);
 	MPI_Comm_size(MPI_COMM_WORLD, &np);
 
-	DSM *dsm = new DSM(np, pid);
-
 	if (pid == 0)
 	{
 		std::cout << "Hello World! Master here." << std::endl;
 		std::cout << "needed: " << MPI_THREAD_MULTIPLE << " - provided: " << provided << std::endl;
 		
+		DSM *dsm = new DSM(np, pid, { {'a', 0} });
 		std::thread thr(listener, pid, status, dsm);
-
-		dsm->subscribeMe('a');
-		dsm->subscribeMe('b');
-		dsm->subscribeMe('c');
 
 		int option, old_value, new_value;
 		char variable;
 		while (true)
 		{
-			std::cout << "1. Update" << std::endl << "2. Compare and exchange" << std::endl << "0. Exit" << std::endl;
+			//std::cout << "1. Update" << std::endl << "2. Compare and exchange" << std::endl;
+			//std::cout << "3. Get value" << std::endl << "0. Exit" << std::endl;
+			std::cout << ">";
 			std::cin >> option;
 
 			if (option == 0)
@@ -80,21 +83,28 @@ int main(int argc, char* argv[])
 			}
 			else if (option == 1)
 			{
-				std::cout << "Choose variable to update (a, b, c): ";
+				std::cout << "Choose variable to update (a, b, c, d, e): ";
 				std::cin >> variable;
 				std::cout << "Enter new value: ";
 				std::cin >> new_value;
-				dsm->updateVariable(variable, new_value);
+				dsm->assignUpdate(variable, new_value);
 			}
 			else if (option == 2)
 			{
-				std::cout << "Choose variable to change (a, b, c): ";
+				std::cout << "Choose variable to change (a, b, c, d, e): ";
 				std::cin >> variable;
 				std::cout << "Enter old value: ";
 				std::cin >> old_value;
 				std::cout << "Enter new value: ";
 				std::cin >> new_value;
 				dsm->xChangeValue(variable, old_value, new_value);
+			}
+			else if (option == 3)
+			{
+				std::cout << "Choose variable to show (a, b, c, d, e): ";
+				std::cin >> variable;
+				int value = dsm->getValue(variable);
+				std::cout << variable << " = " << value << std::endl;
 			}
 		}
 	
@@ -104,23 +114,27 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Slave here: " << pid << std::endl;
 
-		std::thread thr(listener, pid, status, dsm);
 
 		if (pid == 1) {
+			DSM *dsm = new DSM(np, pid, { {'b', 0}, {'c', 0} });
+			std::thread thr(listener, pid, status, dsm);
 			dsm->subscribeMe('a');
-			dsm->subscribeMe('c');
+			thr.join();
 		}
 		else if (pid == 2) {
+			DSM *dsm = new DSM(np, pid, { {'d', 0} });
+			std::thread thr(listener, pid, status, dsm);
 			dsm->subscribeMe('a');
 			dsm->subscribeMe('b');
+			thr.join();
 		}
 		else if (pid == 3) {
-			dsm->subscribeMe('a');
-			dsm->subscribeMe('b');
-			dsm->subscribeMe('c');
+			DSM *dsm = new DSM(np, pid, { {'e', 0} });
+			dsm->subscribeMe('d');
+			std::thread thr(listener, pid, status, dsm);
+			thr.join();
 		}
-
-		thr.join();
+		
 		std::cout << "Slave ends: " << pid << std::endl;
 	}
 

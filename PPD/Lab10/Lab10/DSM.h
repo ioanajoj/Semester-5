@@ -6,11 +6,12 @@
 class DSM
 {
 public:
-	DSM(int world_size, int process_id);
+	DSM(int world_size, int process_id, std::map<char, int> variables);
 	~DSM();
 
 	bool available = true;
 
+	void assignUpdate(char variable, int value);
 	void updateVariable(char variable, int value);
 	void setValue(char variable, int value);
 	void updateSubscribers(char variable, UpdateOperation updateOperation);
@@ -18,6 +19,8 @@ public:
 	void subscribeMe(char variable);
 	void subscribe(int other_process_id, char variable);
 	bool isSubscribedTo(int process_id, char variable);
+	int getValue(char variable);
+	bool contains(char variable);
 	void close();
 
 	int getVariableIndex(char variable);
@@ -28,11 +31,16 @@ private:
 	int world_size;
 	// Process ID
 	int process_id;
-	// Variables in the systems mapped to their values
-	int a, b, c;
+	
+	//// Variables in the systems mapped to their values
+	//int a, b, c;
+
 	// Subsribers to the variables
 	//		• std::string is the string name of the variable
 	//		• int in vector are ids of the nodes
 	std::map<char, std::vector<int>> subscribers;
+	// Variable values
+	std::map<char, int> variables;
+	std::vector<char> vars;
 };
 
