@@ -26,9 +26,9 @@ class SymbolTable:
         if node.symbol == symbol:
             return node.ST_pos
         if node.symbol < symbol:
-            return self.search_node(symbol, node.left)
-        if node.symbol > symbol:
             return self.search_node(symbol, node.right)
+        if node.symbol > symbol:
+            return self.search_node(symbol, node.left)
 
     def add_symbol(self, symbol):
         """

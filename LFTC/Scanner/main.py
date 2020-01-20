@@ -2,8 +2,8 @@ from Scanner import Scanner
 
 print("Hello World!")
 
-codification_table_file = "codification_table.in"
-program_file = "input.ig"
+codification_table_file = "inputs\codification_table.in"
+program_file = "inputs\input.ig"
 scanner = Scanner(codification_table_file, program_file)
 
 print("Read codification table: " + str(scanner.codification_table))
