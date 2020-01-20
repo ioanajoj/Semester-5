@@ -17,6 +17,9 @@ int yyerror(char *s);
 %token IS
 %token PRINT
 %token COMMA
+%token OPERATOR
+%token IF
+%token WHILE
 
 %%
 
@@ -30,18 +33,17 @@ stmt:           assignstmt
                 | whilestmt
                 | printstmt
                 ;
-assignstmt:     ID IS expression
+assignstmt:     ID IS element
+                |ID IS expression
                 ;
-ifstmt:         'if' expression stmt
+ifstmt:         IF expression stmt
                 ;
-whilestmt:      'while' expression stmt
+whilestmt:      WHILE expression stmt
                 ;
 printstmt:      PRINT expression
-expression:     element
-                | element '+' element
-                | INTEGER '-' INTEGER
-                | INTEGER '*' INTEGER
-                | INTEGER '/' INTEGER
+                | PRINT element
+                ;
+expression:     element OPERATOR element
                 ;
 element:        ID 
                 | INTEGER

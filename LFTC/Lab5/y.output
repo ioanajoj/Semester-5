@@ -1,0 +1,351 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: START list_stmt END
+
+    2 list_stmt: stmt
+    3          | stmt COMMA list_stmt
+
+    4 stmt: assignstmt
+    5     | ifstmt
+    6     | whilestmt
+    7     | printstmt
+
+    8 assignstmt: ID IS expression
+
+    9 ifstmt: IF expression stmt
+
+   10 whilestmt: WHILE expression stmt
+
+   11 printstmt: PRINT element
+
+   12 expression: INTEGER OPERATOR INTEGER
+
+   13 element: ID
+   14        | INTEGER
+   15        | BOOL
+   16        | STRING
+   17        | COLLECTION
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INTEGER (258) 12 14
+ID (259) 8 13
+STRING (260) 16
+BOOL (261) 15
+COLLECTION (262) 17
+START (263) 1
+END (264) 1
+IS (265) 8
+PRINT (266) 11
+COMMA (267) 3
+OPERATOR (268) 12
+IF (269) 9
+WHILE (270) 10
+
+
+Nonterminals, with rules where they appear
+
+$accept (16)
+    on left: 0
+program (17)
+    on left: 1, on right: 0
+list_stmt (18)
+    on left: 2 3, on right: 1 3
+stmt (19)
+    on left: 4 5 6 7, on right: 2 3 9 10
+assignstmt (20)
+    on left: 8, on right: 4
+ifstmt (21)
+    on left: 9, on right: 5
+whilestmt (22)
+    on left: 10, on right: 6
+printstmt (23)
+    on left: 11, on right: 7
+expression (24)
+    on left: 12, on right: 8 9 10
+element (25)
+    on left: 13 14 15 16 17, on right: 11
+
+
+state 0
+
+    0 $accept: . program $end
+
+    START  shift, and go to state 1
+
+    program  go to state 2
+
+
+state 1
+
+    1 program: START . list_stmt END
+
+    ID     shift, and go to state 3
+    PRINT  shift, and go to state 4
+    IF     shift, and go to state 5
+    WHILE  shift, and go to state 6
+
+    list_stmt   go to state 7
+    stmt        go to state 8
+    assignstmt  go to state 9
+    ifstmt      go to state 10
+    whilestmt   go to state 11
+    printstmt   go to state 12
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 13
+
+
+state 3
+
+    8 assignstmt: ID . IS expression
+
+    IS  shift, and go to state 14
+
+
+state 4
+
+   11 printstmt: PRINT . element
+
+    INTEGER     shift, and go to state 15
+    ID          shift, and go to state 16
+    STRING      shift, and go to state 17
+    BOOL        shift, and go to state 18
+    COLLECTION  shift, and go to state 19
+
+    element  go to state 20
+
+
+state 5
+
+    9 ifstmt: IF . expression stmt
+
+    INTEGER  shift, and go to state 21
+
+    expression  go to state 22
+
+
+state 6
+
+   10 whilestmt: WHILE . expression stmt
+
+    INTEGER  shift, and go to state 21
+
+    expression  go to state 23
+
+
+state 7
+
+    1 program: START list_stmt . END
+
+    END  shift, and go to state 24
+
+
+state 8
+
+    2 list_stmt: stmt .
+    3          | stmt . COMMA list_stmt
+
+    COMMA  shift, and go to state 25
+
+    $default  reduce using rule 2 (list_stmt)
+
+
+state 9
+
+    4 stmt: assignstmt .
+
+    $default  reduce using rule 4 (stmt)
+
+
+state 10
+
+    5 stmt: ifstmt .
+
+    $default  reduce using rule 5 (stmt)
+
+
+state 11
+
+    6 stmt: whilestmt .
+
+    $default  reduce using rule 6 (stmt)
+
+
+state 12
+
+    7 stmt: printstmt .
+
+    $default  reduce using rule 7 (stmt)
+
+
+state 13
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 14
+
+    8 assignstmt: ID IS . expression
+
+    INTEGER  shift, and go to state 21
+
+    expression  go to state 26
+
+
+state 15
+
+   14 element: INTEGER .
+
+    $default  reduce using rule 14 (element)
+
+
+state 16
+
+   13 element: ID .
+
+    $default  reduce using rule 13 (element)
+
+
+state 17
+
+   16 element: STRING .
+
+    $default  reduce using rule 16 (element)
+
+
+state 18
+
+   15 element: BOOL .
+
+    $default  reduce using rule 15 (element)
+
+
+state 19
+
+   17 element: COLLECTION .
+
+    $default  reduce using rule 17 (element)
+
+
+state 20
+
+   11 printstmt: PRINT element .
+
+    $default  reduce using rule 11 (printstmt)
+
+
+state 21
+
+   12 expression: INTEGER . OPERATOR INTEGER
+
+    OPERATOR  shift, and go to state 27
+
+
+state 22
+
+    9 ifstmt: IF expression . stmt
+
+    ID     shift, and go to state 3
+    PRINT  shift, and go to state 4
+    IF     shift, and go to state 5
+    WHILE  shift, and go to state 6
+
+    stmt        go to state 28
+    assignstmt  go to state 9
+    ifstmt      go to state 10
+    whilestmt   go to state 11
+    printstmt   go to state 12
+
+
+state 23
+
+   10 whilestmt: WHILE expression . stmt
+
+    ID     shift, and go to state 3
+    PRINT  shift, and go to state 4
+    IF     shift, and go to state 5
+    WHILE  shift, and go to state 6
+
+    stmt        go to state 29
+    assignstmt  go to state 9
+    ifstmt      go to state 10
+    whilestmt   go to state 11
+    printstmt   go to state 12
+
+
+state 24
+
+    1 program: START list_stmt END .
+
+    $default  reduce using rule 1 (program)
+
+
+state 25
+
+    3 list_stmt: stmt COMMA . list_stmt
+
+    ID     shift, and go to state 3
+    PRINT  shift, and go to state 4
+    IF     shift, and go to state 5
+    WHILE  shift, and go to state 6
+
+    list_stmt   go to state 30
+    stmt        go to state 8
+    assignstmt  go to state 9
+    ifstmt      go to state 10
+    whilestmt   go to state 11
+    printstmt   go to state 12
+
+
+state 26
+
+    8 assignstmt: ID IS expression .
+
+    $default  reduce using rule 8 (assignstmt)
+
+
+state 27
+
+   12 expression: INTEGER OPERATOR . INTEGER
+
+    INTEGER  shift, and go to state 31
+
+
+state 28
+
+    9 ifstmt: IF expression stmt .
+
+    $default  reduce using rule 9 (ifstmt)
+
+
+state 29
+
+   10 whilestmt: WHILE expression stmt .
+
+    $default  reduce using rule 10 (whilestmt)
+
+
+state 30
+
+    3 list_stmt: stmt COMMA list_stmt .
+
+    $default  reduce using rule 3 (list_stmt)
+
+
+state 31
+
+   12 expression: INTEGER OPERATOR INTEGER .
+
+    $default  reduce using rule 12 (expression)

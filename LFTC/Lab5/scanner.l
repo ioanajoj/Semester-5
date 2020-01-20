@@ -1,5 +1,5 @@
 %{
-#include "parser.tab.h"
+#include "y.tab.h"
 void showError();
 %}
 
@@ -14,11 +14,15 @@ COLLECTION		\[({ELEMENT}(,{ELEMENT})*)*\]
 %%
 
 [ \t\n]+					{}
-","                         {   printf("comma: %s\n", yytext); return COMMA; }
-("start")                 	{   printf("keyword: %s\n", yytext); return START;    }
+","                         {   printf("comma: %s\n", yytext); return COMMA;    }
+"+"|"-"|"*"|"/"             {   printf("operator: %s\n", yytext); return OPERATOR;   }  
+">"|">="|"<"|"<="|"="       {   printf("operator: %s\n", yytext); return OPERATOR;   }                       {   printf("comma: %s\n", yytext); return COMMA; }
+"start"                 	{   printf("keyword: %s\n", yytext); return START;    }
 "end"                   	{   printf("keyword: %s\n", yytext); return END;    }
 "is"                    	{   printf("keyword: %s\n", yytext); return IS;    }
 "print"                   	{   printf("keyword: %s\n", yytext); return PRINT;    }
+"if"                   	    {   printf("keyword: %s\n", yytext); return IF;    }
+"while"                   	{   printf("keyword: %s\n", yytext); return WHILE;    }
 {INTEGER}					{   printf("integer: %d\n", atoi(yytext)); return INTEGER;  }
 {BOOL}						{   printf("bool: %s\n", yytext); return BOOL;  }
 {STRING}					{   printf("string: %s\n", yytext); return STRING;  }

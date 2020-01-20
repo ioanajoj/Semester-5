@@ -48,9 +48,27 @@
      END = 264,
      IS = 265,
      PRINT = 266,
-     COMMA = 267
+     COMMA = 267,
+     OPERATOR = 268,
+     IF = 269,
+     WHILE = 270
    };
 #endif
+/* Tokens.  */
+#define INTEGER 258
+#define ID 259
+#define STRING 260
+#define BOOL 261
+#define COLLECTION 262
+#define START 263
+#define END 264
+#define IS 265
+#define PRINT 266
+#define COMMA 267
+#define OPERATOR 268
+#define IF 269
+#define WHILE 270
+
 
 
 
