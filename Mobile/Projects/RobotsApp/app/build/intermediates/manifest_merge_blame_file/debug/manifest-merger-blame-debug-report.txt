@@ -1,0 +1,100 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="en.ubb.entityapp"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+8-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="28" />
+9-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:5:5-67
+11-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:5:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:6:5-78
+12-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:6:22-76
+13
+14    <application
+14-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:8:5-32:19
+15        android:name="en.ubb.entityapp.EntityApp"
+15-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:9:9-34
+16        android:allowBackup="true"
+16-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:10:9-35
+17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+17-->[androidx.core:core:1.1.0] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\a83bef444c9240faa8e56c19819ce9ad\core-1.1.0\AndroidManifest.xml:24:18-86
+18        android:debuggable="true"
+19        android:icon="@mipmap/ic_launcher"
+19-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:11:9-43
+20        android:label="@string/app_name"
+20-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:12:9-41
+21        android:roundIcon="@mipmap/ic_launcher_round"
+21-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:13:9-54
+22        android:supportsRtl="true"
+22-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:14:9-35
+23        android:testOnly="true"
+24        android:theme="@style/AppTheme"
+24-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:16:9-40
+25        android:usesCleartextTraffic="true" >
+25-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:15:9-44
+26        <activity android:name="en.ubb.entityapp.EntityListActivity" />
+26-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:17:9-55
+26-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:17:19-53
+27        <activity android:name="en.ubb.entityapp.EntityDetailActivity" />
+27-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:18:9-57
+27-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:18:19-55
+28        <activity android:name="en.ubb.entityapp.NewEntityActivity" />
+28-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:19:9-54
+28-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:19:19-52
+29        <activity android:name="en.ubb.entityapp.AgeListActivity" />
+29-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:20:9-52
+29-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:20:19-50
+30        <activity android:name="en.ubb.entityapp.StartActivity" >
+30-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:21:9-27:20
+30-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:21:19-48
+31            <intent-filter>
+31-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:22:13-26:29
+32                <action android:name="android.intent.action.MAIN" />
+32-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:23:17-69
+32-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:23:25-66
+33
+34                <category android:name="android.intent.category.LAUNCHER" />
+34-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:25:17-77
+34-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:25:27-74
+35            </intent-filter>
+36        </activity>
+37        <activity android:name="en.ubb.entityapp.RobotsListActivity" />
+37-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:28:9-55
+37-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:28:19-53
+38        <activity android:name="en.ubb.entityapp.NewRobotActivity" />
+38-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:29:9-53
+38-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:29:19-51
+39        <activity android:name="en.ubb.entityapp.RobotDetailActivity" />
+39-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:30:9-56
+39-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:30:19-54
+40        <activity android:name="en.ubb.entityapp.RobotAgeDetailActivity" />
+40-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:31:9-59
+40-->E:\UBB\Semester 5\Mobile\Projects\RobotsApp\app\src\main\AndroidManifest.xml:31:19-57
+41
+42        <service
+42-->[androidx.room:room-runtime:2.2.3] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\96550f0948b52bc727e4ec2cdb9b759b\room-runtime-2.2.3\AndroidManifest.xml:25:9-27:40
+43            android:name="androidx.room.MultiInstanceInvalidationService"
+43-->[androidx.room:room-runtime:2.2.3] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\96550f0948b52bc727e4ec2cdb9b759b\room-runtime-2.2.3\AndroidManifest.xml:26:13-74
+44            android:exported="false" />
+44-->[androidx.room:room-runtime:2.2.3] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\96550f0948b52bc727e4ec2cdb9b759b\room-runtime-2.2.3\AndroidManifest.xml:27:13-37
+45
+46        <provider
+46-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\0661e55369797cfbcda259c94ecab98c\lifecycle-process-2.1.0\AndroidManifest.xml:23:9-27:43
+47            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+47-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\0661e55369797cfbcda259c94ecab98c\lifecycle-process-2.1.0\AndroidManifest.xml:24:13-79
+48            android:authorities="en.ubb.entityapp.lifecycle-process"
+48-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\0661e55369797cfbcda259c94ecab98c\lifecycle-process-2.1.0\AndroidManifest.xml:25:13-69
+49            android:exported="false"
+49-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\0661e55369797cfbcda259c94ecab98c\lifecycle-process-2.1.0\AndroidManifest.xml:26:13-37
+50            android:multiprocess="true" />
+50-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\joj\.gradle\caches\transforms-2\files-2.1\0661e55369797cfbcda259c94ecab98c\lifecycle-process-2.1.0\AndroidManifest.xml:27:13-40
+51    </application>
+52
+53</manifest>
