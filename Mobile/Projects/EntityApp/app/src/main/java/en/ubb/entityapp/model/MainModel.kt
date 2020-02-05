@@ -25,9 +25,11 @@ class MainModel : ViewModel() {
 
     private val mutableEntities = MutableLiveData<List<Entity>>().apply { value = emptyList() }
     private val mutableLoading = MutableLiveData<Boolean>().apply { value = false }
+    private val mutableMessage = MutableLiveData<String>()
 
     val entities: LiveData<List<Entity>> = mutableEntities
     val loading: LiveData<Boolean> = mutableLoading
+    val message: LiveData<String> = mutableMessage
 
     fun fetchEntitiesFromNetwork(app: EntityApp) {
         viewModelScope.launch {
