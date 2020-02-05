@@ -1,0 +1,4 @@
+en.ubb.cluj_eats_flutter
+drawable launch_background
+mipmap ic_launcher
+style LaunchTheme

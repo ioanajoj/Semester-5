@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ClujEatsKotlin</string>
+    <string name="name_of_the_place">Name of the place</string>
+    <string name="describe_in_a_few_words">Describe in a few words</string>
+    <string name="mapTextView">Hello World</string>
+    <string name="mapQuery">Query...</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="startingTime">08:00</string>
+    <string name="endingTime">20:00</string>
+    <string name="not_saved">Item could not be saved</string>
+    <string name="deleteButton">deleteButton</string>
+</resources>
